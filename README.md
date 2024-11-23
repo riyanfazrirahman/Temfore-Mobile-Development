@@ -1,12 +1,7 @@
 # Temfore: Mobile Development
 
-<a href="https://www.figma.com/board/kk1GoJZcXCeFLDyCRNRiCg/Project-Plan?node-id=1-357&t=FSVm0qZaa2Je8hZn-1" target="_blank">
-  <img src="https://img.shields.io/badge/Figma-Flow%20Chart-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Flow Chart" />
-</a>
-
-<a href="https://www.figma.com/design/ZN2GS2mXkTM5ssUM3Kr4IW/Project-Capstone?node-id=0-1&t=YvxR49v6gj2VTm4m-1" target="_blank">
-  <img src="https://img.shields.io/badge/Figma-Desain%20UI%2FWireframe-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Desain UI/Wireframe" />
-</a>
+[![Flow Chart](https://img.shields.io/badge/Figma-Flow%20Chart-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/board/kk1GoJZcXCeFLDyCRNRiCg/Project-Plan?node-id=1-357&t=FSVm0qZaa2Je8hZn-1)  
+[![Desain UI/Wireframe](https://img.shields.io/badge/Figma-Desain%20UI%2FWireframe-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/ZN2GS2mXkTM5ssUM3Kr4IW/Project-Capstone?node-id=0-1&t=YvxR49v6gj2VTm4m-1)
 
 ## C242-PS547
 
