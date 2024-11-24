@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.profile
+package com.capstone.temfore.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.onboarding
+package com.capstone.temfore.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.capstone.tempore.MainActivity
-import com.capstone.tempore.R
-import com.capstone.tempore.databinding.ActivityOnboardingBinding
+import com.capstone.temfore.MainActivity
+import com.capstone.temfore.R
+import com.capstone.temfore.databinding.ActivityOnboardingBinding
 
 class OnboardingActivity : AppCompatActivity() {
 

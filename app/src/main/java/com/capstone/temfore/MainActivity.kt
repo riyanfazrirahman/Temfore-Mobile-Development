@@ -1,4 +1,4 @@
-package com.capstone.tempore
+package com.capstone.temfore
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.capstone.tempore.databinding.ActivityMainBinding
-import com.capstone.tempore.ui.onboarding.OnboardingActivity
+import com.capstone.temfore.databinding.ActivityMainBinding
+import com.capstone.temfore.ui.onboarding.OnboardingActivity
 
 class MainActivity : AppCompatActivity() {
 

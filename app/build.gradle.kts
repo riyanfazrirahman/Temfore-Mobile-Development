@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.capstone.tempore"
+    namespace = "com.capstone.temfore"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.capstone.tempore"
+        applicationId = "com.capstone.temfore"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.favorite
+package com.capstone.temfore.ui.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.capstone.tempore.ui.home.HomeFragment"
+        android:name="com.capstone.temfore.ui.home.HomeFragment"
         android:label="@string/title_welcome_username"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="com.capstone.tempore.ui.favorite.FavoriteFragment"
+        android:name="com.capstone.temfore.ui.favorite.FavoriteFragment"
         android:label="@string/title_favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.capstone.tempore.ui.search.SearchFragment"
+        android:name="com.capstone.temfore.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.capstone.tempore.ui.profile.ProfileFragment"
+        android:name="com.capstone.temfore.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

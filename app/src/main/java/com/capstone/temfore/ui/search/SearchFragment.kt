@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.favorite
+package com.capstone.temfore.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.capstone.tempore.databinding.FragmentFavoriteBinding
+import com.capstone.temfore.databinding.FragmentSearchBinding
 
-class FavoriteFragment : Fragment() {
+class SearchFragment : Fragment() {
 
-    private var _binding: FragmentFavoriteBinding? = null
+    private var _binding: FragmentSearchBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class FavoriteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val favoriteViewModel =
-            ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        val searchViewModel =
+            ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        favoriteViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textNotifications
+        searchViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

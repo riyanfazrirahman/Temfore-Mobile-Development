@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.home
+package com.capstone.temfore.ui.home
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,10 +15,10 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.capstone.tempore.R
-import com.capstone.tempore.data.WeatherRepository
-import com.capstone.tempore.data.retrofit.ApiConfig
-import com.capstone.tempore.databinding.FragmentHomeBinding
+import com.capstone.temfore.R
+import com.capstone.temfore.data.WeatherRepository
+import com.capstone.temfore.data.retrofit.ApiConfig
+import com.capstone.temfore.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task

@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.search
+package com.capstone.temfore.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

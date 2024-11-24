@@ -1,4 +1,4 @@
-package com.capstone.tempore.ui.home
+package com.capstone.temfore.ui.home
 
 import android.os.Handler
 import android.os.Looper
@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.capstone.tempore.data.WeatherRepository
-import com.capstone.tempore.data.response.WeatherResponse
-import com.capstone.tempore.utils.TimeUtils
+import com.capstone.temfore.data.WeatherRepository
+import com.capstone.temfore.data.response.WeatherResponse
+import com.capstone.temfore.utils.TimeUtils
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
