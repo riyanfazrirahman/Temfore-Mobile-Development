@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Tempore App</string>
+    <string name="title_home">Home</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_search">Search</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_welcome_username">Hi, Riyan</string>
+    <string name="title_user_location">%1$s</string>
+    <string name="title_user_temperature">%1$s℃</string>
+
+    <string name="title_hello">Good morning,</string>
+    <string name="title_it_hello">is it time for</string>
+    <string name="title_user_time">%1$s</string>
+    <string name="title_user_hello">%1$s</string>
+
+    <string name="data_not_available" tools:ignore="TypographyEllipsis">...</string>
+
+
+</resources>

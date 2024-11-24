@@ -1,0 +1,42 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TemporeApp" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/feldspar</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_silver</item>
+        <item name="colorSecondaryVariant">@color/feldspar</item>
+        <item name="colorOnSecondary">?attr/colorPrimary</item>
+        <item name="colorSecondaryContainer">?attr/colorPrimaryVariant</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+
+        <!-- Customize your theme here. -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorSurface">?attr/colorPrimary</item>
+        <item name="colorOnSurfaceVariant">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.App.BottomAppBar" parent="Widget.Material3.BottomAppBar">
+        <!-- Latar belakang BottomAppBar -->
+        <item name="backgroundTint">@color/orange</item>
+
+        <!-- Warna ikon di BottomAppBar -->
+        <item name="navigationIconTint">@color/orange</item>
+
+        <!-- Elevasi atau bayangan BottomAppBar -->
+        <item name="elevation">8dp</item>
+
+    </style>
+</resources>
