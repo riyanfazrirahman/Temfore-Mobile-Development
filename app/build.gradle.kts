@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.auth)
 
     // Testing
     testImplementation(libs.junit)
@@ -69,6 +71,9 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+    // data storage
+    implementation(libs.androidx.datastore.preferences)
+
     // gambar
     implementation(libs.glide)
 
@@ -77,5 +82,13 @@ dependencies {
 
     // Google Play services
     implementation(libs.play.services.location)
+
+    // Authentication Akun Google
+    implementation(libs.play.services.auth)
+
+    // Credential Manager
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
 }

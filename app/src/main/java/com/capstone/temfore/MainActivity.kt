@@ -7,16 +7,27 @@ import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.temfore.databinding.ActivityMainBinding
+import com.capstone.temfore.ui.auth.login.LoginActivity
+import com.capstone.temfore.ui.home.HomeFragment
 import com.capstone.temfore.ui.onboarding.OnboardingActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +35,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+        auth = Firebase.auth
+
+        val firebaseUser = auth.currentUser
+
+        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val isOnboardingCompleted = sharedPreferences.getBoolean("isOnboardingCompleted", false)
 
         if (!isOnboardingCompleted) {
+            // Redirect ke Onboarding
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
-            finish() // Tutup MainActivity agar tidak bisa kembali
+            finish()
+            return
+        }
+
+        if (firebaseUser == null) {
+            // Not signed in, launch the Login activity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
         }
 
         // Set Toolbar sebagai ActionBar
@@ -41,6 +65,14 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val userDisplayName = user.displayName ?: "User"
+            val destination = navController.graph.findNode(R.id.navigation_home)
+            destination?.label = "Hi, $userDisplayName"
+        }
+
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -63,11 +95,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_notifications -> {
-                // Handle settings action
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
 }

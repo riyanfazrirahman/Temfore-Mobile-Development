@@ -1,6 +1,7 @@
 package com.capstone.temfore.ui.home
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,18 +21,22 @@ import com.capstone.temfore.R
 import com.capstone.temfore.data.WeatherRepository
 import com.capstone.temfore.data.retrofit.ApiConfig
 import com.capstone.temfore.databinding.FragmentHomeBinding
+import com.capstone.temfore.ui.auth.login.LoginActivity
+import com.capstone.temfore.ui.onboarding.OnboardingActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlin.math.roundToInt
-
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var viewModel: HomeViewModel
-
+    private lateinit var auth: FirebaseAuth
 
     // Permission request launcher untuk meminta izin lokasi
     private val requestPermissionLauncher =
@@ -40,7 +46,11 @@ class HomeFragment : Fragment() {
             } else {
                 // Handle ketika izin ditolak
                 Log.d(TAG, "Permission Denied")
-                Toast.makeText(requireContext(), "Izin lokasi diperlukan untuk mengambil cuaca!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Izin lokasi diperlukan untuk mengambil cuaca!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -55,6 +65,16 @@ class HomeFragment : Fragment() {
         // Inisialisasi binding untuk fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        auth = Firebase.auth
+        val firebaseUser = auth.currentUser
+
+        Log.d("HomeFragment", "Email verified: ${firebaseUser?.isEmailVerified}")
+        if (firebaseUser == null) {
+            // Not signed in, launch the Login activity
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
 
         // Inisialisasi FusedLocationProviderClient untuk mendapatkan lokasi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -83,8 +103,12 @@ class HomeFragment : Fragment() {
 
             if (weatherResponse != null) {
                 // Update UI dengan data cuaca
-                binding.textUserLocation.text = getString(R.string.title_user_location, weatherResponse.location)
-                binding.textUserTemperature.text = getString(R.string.title_user_temperature, weatherResponse.temperature.roundToInt().toString())
+                binding.textUserLocation.text =
+                    getString(R.string.title_user_location, weatherResponse.location)
+                binding.textUserTemperature.text = getString(
+                    R.string.title_user_temperature,
+                    weatherResponse.temperature.roundToInt().toString()
+                )
 
                 // Dapatkan ikon cuaca
                 val iconUrl = if (weatherResponse.icon.startsWith("http://")) {
@@ -152,26 +176,26 @@ class HomeFragment : Fragment() {
         // Mendapatkan lokasi terakhir
         Log.d(TAG, "Attempting to get location")
         fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task: Task<Location?> ->
-                if (task.isSuccessful) {
-                    val location = task.result
-                    if (location != null) {
-                        Log.d(
-                            TAG,
-                            "Location fetched: Lat: ${location.latitude}, Lon: ${location.longitude}"
-                        )
-                        val latitude = location.latitude
-                        val longitude = location.longitude
-                        // Panggil API cuaca dengan latitude dan longitude
-                        fetchWeatherByCoordinates(latitude, longitude)
-                    } else {
-                        // Handle jika lokasi null
-                        Log.d(TAG, "Location is null")
-                    }
+            if (task.isSuccessful) {
+                val location = task.result
+                if (location != null) {
+                    Log.d(
+                        TAG,
+                        "Location fetched: Lat: ${location.latitude}, Lon: ${location.longitude}"
+                    )
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    // Panggil API cuaca dengan latitude dan longitude
+                    fetchWeatherByCoordinates(latitude, longitude)
                 } else {
-                    // Handle jika gagal mendapatkan lokasi
-                    Log.d(TAG, "Failed to get location: ${task.exception?.message}")
+                    // Handle jika lokasi null
+                    Log.d(TAG, "Location is null")
                 }
+            } else {
+                // Handle jika gagal mendapatkan lokasi
+                Log.d(TAG, "Failed to get location: ${task.exception?.message}")
             }
+        }
     }
 
     // Ambil data cuaca berdasarkan koordinat (latitude dan longitude)

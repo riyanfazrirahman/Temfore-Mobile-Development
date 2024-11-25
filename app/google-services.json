@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "879994394867",
+    "project_id": "temfore",
+    "storage_bucket": "temfore.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879994394867:android:5bc04d28e463dc5854bf86",
+        "android_client_info": {
+          "package_name": "com.capstone.temfore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879994394867-esgj42n498t2qtf2epccsttua8v0keiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.temfore",
+            "certificate_hash": "aad9a2d2e5eeb6356fcb2b1a5ab16d3c4e39247b"
+          }
+        },
+        {
+          "client_id": "879994394867-sp65qf8nt83eq2b4ggt06dsi47o1u8n8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnabw7INBJkpbEr3efT_ZIwLVzmNcu77I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879994394867-sp65qf8nt83eq2b4ggt06dsi47o1u8n8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
