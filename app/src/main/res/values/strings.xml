@@ -6,7 +6,7 @@
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="title_welcome_username">Hi, Riyan</string>
+    <string name="title_welcome_username">Hi..</string>
     <string name="title_user_location">%1$s</string>
     <string name="title_user_temperature">%1$s℃</string>
 
@@ -16,6 +16,7 @@
     <string name="title_user_hello">%1$s</string>
 
     <string name="data_not_available" tools:ignore="TypographyEllipsis">...</string>
+    <string name="your_web_client_id">879994394867-sp65qf8nt83eq2b4ggt06dsi47o1u8n8.apps.googleusercontent.com</string>
 
 
 </resources>

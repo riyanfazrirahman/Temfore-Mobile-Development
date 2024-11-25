@@ -21,12 +21,11 @@ class OnboardingActivity : AppCompatActivity() {
 
         binding.btnStart.setOnClickListener {
             // Simpan status bahwa onboarding sudah selesai
-            val sharedPreferences = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+            val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
             sharedPreferences.edit().putBoolean("isOnboardingCompleted", true).apply()
 
             // Pindah ke MainActivity
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
