@@ -20,20 +20,18 @@
             android:layout_height="wrap_content"
             android:text="@string/data_not_available"
             android:textColor="@color/white"
-            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_hello"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:text="@string/data_not_available"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -41,10 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/title_it_hello"
+            android:text="@string/data_not_available"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/text_time"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_time" />
 
         <TextView
@@ -54,29 +51,55 @@
             android:layout_marginTop="8dp"
             android:text="@string/data_not_available"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/text_time"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_it_time" />
 
         <ImageView
             android:id="@+id/image_temperature"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/text_user_location"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toStartOf="@+id/text_user_temperature"
             app:layout_constraintTop_toBottomOf="@+id/text_user_location" />
 
         <TextView
             android:id="@+id/text_user_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:text="@string/data_not_available"
             android:textColor="@color/white"
-            android:textSize="42sp"
+            android:textStyle="bold"
+            android:textSize="38sp"
             app:layout_constraintBottom_toBottomOf="@+id/image_temperature"
-            app:layout_constraintStart_toEndOf="@+id/image_temperature"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/image_temperature" />
+
+
+        <TextView
+            android:id="@+id/text_user_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/data_not_available"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/text_user_weather"
+            app:layout_constraintEnd_toStartOf="@+id/text_user_weather"
+            app:layout_constraintTop_toTopOf="@+id/text_user_weather" />
+
+        <TextView
+            android:id="@+id/text_user_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_not_available"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_user_temperature" />
+
 
         <ProgressBar
             android:id="@+id/progressBar"

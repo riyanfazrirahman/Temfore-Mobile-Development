@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#2A292B</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#B0B0B0</color>
 
     <color name="orange">#FF6700</color>
     <color name="feldspar">#FFD2B3</color>
     <color name="light_silver">#D9D9D9</color>
+
+    <color name="orange_100">#FFE6CC</color>
+    <color name="orange_200">#FFCC99</color>
+    <color name="orange_300">#FFB366</color>
+    <color name="orange_400">#FF9933</color>
+    <color name="orange_500">#FF8000</color>
+    <color name="orange_600">#E67300</color>
+    <color name="orange_700">#CC6600</color>
+    <color name="orange_800">#B35900</color>
+    <color name="orange_900">#993D00</color>
+
+    <color name="feldspar_100">#FFF2E5</color>
+    <color name="feldspar_200">#FFE6CC</color>
+    <color name="feldspar_300">#FFD9B3</color>
+    <color name="feldspar_400">#FFCC99</color>
+    <color name="feldspar_500">#FFBF80</color>
+    <color name="feldspar_600">#FFB266</color>
+    <color name="feldspar_700">#FFA54D</color>
+    <color name="feldspar_800">#FF9933</color>
+    <color name="feldspar_900">#FF8C1A</color>
+
+    <color name="black_100">#4D4C4D</color>
+    <color name="black_200">#3F3E40</color>
+    <color name="black_300">#333233</color>
+    <color name="black_400">#2A292B</color>
+    <color name="black_500">#232223</color>
+    <color name="black_600">#1C1B1C</color>
+    <color name="black_700">#161516</color>
+    <color name="black_800">#0F0F0F</color>
+    <color name="black_900">#090809</color>
 
 </resources>

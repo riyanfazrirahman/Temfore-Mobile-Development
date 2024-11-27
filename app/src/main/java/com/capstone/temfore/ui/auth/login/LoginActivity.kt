@@ -1,17 +1,18 @@
 package com.capstone.temfore.ui.auth.login
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.app.ActivityOptions
 import android.content.Intent
-import android.os.Build
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.util.Patterns
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -22,6 +23,7 @@ import com.capstone.temfore.MainActivity
 import com.capstone.temfore.R
 import com.capstone.temfore.databinding.ActivityLoginBinding
 import com.capstone.temfore.ui.auth.register.RegisterActivity
+import com.capstone.temfore.ui.auth.register.WaitingVerificationActivity
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -44,48 +46,140 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
-        setupAction()
-        playAnimation()
+        val loginAnimationHelper = LoginAnimationHelper()
+        loginAnimationHelper.playAnimation(binding)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.edtEmail.text.toString()
-            val password = binding.edtPassword.text.toString()
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Email dan Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (checkAllField()) {
+                binding.progressBar.visibility = View.VISIBLE
+                // Proses login menggunakan EmailAndPassword
+                login()
             }
-
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Login berhasil
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    } else {
-                        // Menampilkan error
-                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
         }
 
-        binding.signInButton.setOnClickListener {
-            signIn()
+        binding.btnLoginWithGoogle.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+            loginWithGoogle()
         }
 
-
-        binding.registerAccount.setOnClickListener{
-            startActivity(Intent(this, RegisterActivity::class.java))
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            // Membuat transisi animasi
+            val options = ActivityOptions.makeCustomAnimation(
+                this,    // Context
+                android.R.anim.fade_in,    // Animasi saat Activity pertama muncul
+                android.R.anim.fade_out    // Animasi saat Activity pertama hilang
+            )
+            startActivity(intent, options.toBundle())
             finish()
         }
     }
 
-    private fun signIn() {
-        val credentialManager = CredentialManager.create(this) //import from androidx.CredentialManager
+    private fun login(){
+        val email = binding.inputEmail.text.toString().trim()
+        val password = binding.inputPassword.text.toString().trim()
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Cek status verifikasi email
+                checkEmailVerificationStatus()
+            } else {
+                // Menampilkan pesan error
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(
+                    this,
+                    "Login gagal: Email atau Password yang Anda masukkan salah.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun checkEmailVerificationStatus() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val verification = user?.isEmailVerified
+        Log.d(TAG,"Email Verify: $verification")
+
+        // Email sudah terverifikasi, lanjutkan proses
+        if (user != null && verification == true) {
+            binding.progressBar.visibility = View.GONE
+            // Tampilkan dialog sukses setelah login berhasil
+            AlertDialog.Builder(this).apply {
+                setTitle("Sukses Login!")
+                setMessage("Akun dengan email ${user.email} berhasil login. Selamat datang kembali!")
+                setPositiveButton("Lanjut") { _, _ ->
+                    // Pindah ke MainActivity
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                create()
+                show()
+            }
+        } else {
+            binding.progressBar.visibility = View.GONE
+            // Email belum terverifikasi, tampilkan pesan atau lanjutkan ke WaitingVerificationActivity
+            Toast.makeText(
+                this,
+                "Email belum diverifikasi. Silakan cek email Anda untuk verifikasi.",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this, WaitingVerificationActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun checkAllField(): Boolean {
+        val email = binding.inputEmail.text.toString().trim()
+        val password = binding.inputPassword.text.toString().trim()
+
+        // Validasi input
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Email dan Password tidak boleh kosong.", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.layoutEmail.error = "Check Email Format!"
+            binding.layoutEmail.setErrorTextColor(
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+            )
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.layoutEmail.isErrorEnabled = false
+            }, 3000)
+            return false
+        }
+
+        if (password.length < 8) {
+            binding.layoutPassword.error = "Password must be at least 8 characters!"
+            binding.layoutPassword.setErrorTextColor(
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+            )
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.layoutPassword.isErrorEnabled = false
+            }, 3000)
+            return false
+        }
+        return true
+    }
+
+    private fun loginWithGoogle() {
+        val credentialManager =
+            CredentialManager.create(this) //import from androidx.CredentialManager
 
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
@@ -98,28 +192,34 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val result: GetCredentialResponse = credentialManager.getCredential( //import from androidx.CredentialManager
+                val result: GetCredentialResponse = credentialManager.getCredential(
+                    //import from androidx.CredentialManager
                     request = request,
                     context = this@LoginActivity,
                 )
-                handleSignIn(result)
+                handleLoginWithGoogle(result)
             } catch (e: GetCredentialException) { //import from androidx.CredentialManager
                 Log.d("Error", e.message.toString())
             }
         }
     }
 
-    private fun handleSignIn(result: GetCredentialResponse) {
+    private fun handleLoginWithGoogle(result: GetCredentialResponse) {
         // Handle the successfully returned credential.
         when (val credential = result.credential) {
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
                         // Use googleIdTokenCredential and extract id to validate and authenticate on your server.
-                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                        val googleIdTokenCredential =
+                            GoogleIdTokenCredential.createFrom(credential.data)
                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
-                        Toast.makeText(this, "Token tidak valid, silakan coba lagi.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Token tidak valid, silakan coba lagi.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.e(TAG, "Received an invalid google id token response", e)
                     }
                 } else {
@@ -165,71 +265,6 @@ class LoginActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
-
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun setupAction() {
-        binding.btnLogin.setOnClickListener {
-            val email = binding.edtEmail.text.toString()
-
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $email sudah jadi nih. Yuk, login.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
-                }
-                create()
-                show()
-            }
-        }
-    }
-
-    private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imgLogo, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
-            repeatCount = ObjectAnimator.INFINITE
-            repeatMode = ObjectAnimator.REVERSE
-        }.start()
-
-        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
-        val nameTextView =
-            ObjectAnimator.ofFloat(binding.textRegist, View.ALPHA, 1f).setDuration(100)
-        val emailTextView =
-            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
-        val emailEditTextLayout =
-            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val passwordTextView =
-            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
-        val passwordEditTextLayout =
-            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val signup = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(100)
-
-
-        AnimatorSet().apply {
-            playSequentially(
-                title,
-                nameTextView,
-                emailTextView,
-                emailEditTextLayout,
-                passwordTextView,
-                passwordEditTextLayout,
-                signup
-            )
-            startDelay = 100
-        }.start()
-    }
-
 
     companion object {
         private const val TAG = "LoginActivity"

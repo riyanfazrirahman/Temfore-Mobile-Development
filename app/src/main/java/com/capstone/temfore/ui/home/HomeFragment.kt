@@ -109,6 +109,10 @@ class HomeFragment : Fragment() {
                     R.string.title_user_temperature,
                     weatherResponse.temperature.roundToInt().toString()
                 )
+                val humidity = "💧${weatherResponse.cloudiness} %,"
+                binding.textUserHumidity.text = getString(R.string.title_user_humidity, humidity)
+                val weather = weatherResponse.description
+                binding.textUserWeather.text =  getString(R.string.title_user_weather, weather)
 
                 // Dapatkan ikon cuaca
                 val iconUrl = if (weatherResponse.icon.startsWith("http://")) {
@@ -132,6 +136,8 @@ class HomeFragment : Fragment() {
                 viewModel.helloMessageData.observe(requireActivity()) { message ->
                     binding.textTime.text = getString(R.string.title_user_hello, message)
                 }
+
+                binding.textItTime.text = getString(R.string.title_it_hello)
 
             } else {
                 // Jika data tidak tersedia, tampilkan pesan error

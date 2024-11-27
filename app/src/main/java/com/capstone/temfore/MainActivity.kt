@@ -4,25 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.credentials.ClearCredentialStateRequest
-import androidx.credentials.CredentialManager
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.temfore.databinding.ActivityMainBinding
 import com.capstone.temfore.ui.auth.login.LoginActivity
-import com.capstone.temfore.ui.home.HomeFragment
 import com.capstone.temfore.ui.onboarding.OnboardingActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,10 +61,16 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
 
         val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
+        val verification = user?.isEmailVerified
+        // Cek status verifikasi email
+        if (verification == true) {
+            // Email sudah diverifikasi
             val userDisplayName = user.displayName ?: "User"
             val destination = navController.graph.findNode(R.id.navigation_home)
             destination?.label = "Hi, $userDisplayName"
+        } else {
+            // Email belum diverifikasi
+            logOut()
         }
 
         // menu should be considered as top level destinations.
@@ -97,9 +97,22 @@ class MainActivity : AppCompatActivity() {
             R.id.action_notifications -> {
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun logOut() {
+        // Logout dari Firebase
+        auth.signOut()
+
+        // Hapus data login dari SharedPreferences
+        val sharedPreferences = this.getSharedPreferences("AppPrefs", AppCompatActivity.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+
+        // Redirect ke LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()  // Finish ProfileFragment agar tidak bisa kembali
     }
 
 

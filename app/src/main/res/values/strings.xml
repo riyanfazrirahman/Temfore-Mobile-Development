@@ -6,9 +6,19 @@
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="login_temfore">
+        <font color="#FF6700">Login</font> <font color="#000000">Temfore</font>
+    </string>
+
+    <string name="register_temfore">
+        <font color="#FF6700">Register</font> <font color="#000000">Temfore</font>
+    </string>
+
     <string name="title_welcome_username">Hi..</string>
     <string name="title_user_location">%1$s</string>
     <string name="title_user_temperature">%1$s℃</string>
+    <string name="title_user_humidity">%1$s</string>
+    <string name="title_user_weather">%1$s</string>
 
     <string name="title_hello">Good morning,</string>
     <string name="title_it_hello">is it time for</string>
