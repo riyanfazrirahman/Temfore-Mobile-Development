@@ -71,7 +71,7 @@ class ResetPasswordActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val isLogin = sharedPreferences.getBoolean("isLoggedIn", false)
 
-        if (!isLogin) {
+        if (isLogin) {
             // Dialog untuk logout dan reset password ketika belum login
             AlertDialog.Builder(this).apply {
                 setTitle("Konfirmasi Logout")
