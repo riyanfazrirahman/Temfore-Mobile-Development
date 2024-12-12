@@ -1,31 +1,26 @@
 package com.capstone.temfore.ui.home
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.capstone.temfore.data.WeatherRepository
-import com.capstone.temfore.data.response.WeatherResponse
 import com.capstone.temfore.utils.TimeUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
+class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    private val timeUtils: TimeUtils = TimeUtils()
 
-    private val _weatherData = MutableLiveData<WeatherResponse>()
-    val weatherData: LiveData<WeatherResponse> get() = _weatherData
+    private val _timeData = MutableLiveData<String>()
+    val timeData: LiveData<String> get() = _timeData
 
-//    private val _timeData = MutableLiveData<String>()
-//    val timeData: LiveData<String> get() = _timeData
-//
-//    private val _dateData = MutableLiveData<String>()
-//    val dateData: LiveData<String> get() = _dateData
+    private val _timeHoursData = MutableLiveData<String>()
+    val timeHoursData: LiveData<String> get() = _timeHoursData
+
+    private val _dateData = MutableLiveData<String>()
+    val dateData: LiveData<String> get() = _dateData
 
     private val _timeMessageData = MutableLiveData<String>()
     val timeMessageData: LiveData<String> get() = _timeMessageData
@@ -33,40 +28,28 @@ class HomeViewModel(private val weatherRepository: WeatherRepository) : ViewMode
     private val _helloMessageData = MutableLiveData<String>()
     val helloMessageData: LiveData<String> get() = _helloMessageData
 
-    private val timeUtils = TimeUtils()
-
-    // Update time and date every second
-    private val handler = Handler(Looper.getMainLooper())
-
-    init {
-//        startRealTimeClock()
-        updateTimeDisplay()
-    }
-
-    fun fetchWeatherByCoordinates(latitude: Double, longitude:Double) {
-        viewModelScope.launch {
-            try {
-                val response = weatherRepository.getWeatherByCoordinates(latitude, longitude)
-                _weatherData.postValue(response)
-            } catch (e: Exception) {
-                // Handle error
-            }
+    // Use viewModelScope to update time every second
+    private val timeUpdateJob = viewModelScope.launch {
+        while (isActive) {
+            updateTimeDisplay()
+            delay(1000) // Delay for 1 second
         }
     }
 
-//    private fun startRealTimeClock() {
-//        handler.post(object : Runnable {
-//            override fun run() {
-//                updateTimeDisplay()
-//                handler.postDelayed(this, 1000)
-//            }
-//        })
-//    }
+    init {
+        updateTimeDisplay()
+    }
 
     private fun updateTimeDisplay() {
-//        _timeData.postValue(timeUtils.getCurrentTime())
-//        _dateData.postValue(timeUtils.getCurrentDate())
-        _timeMessageData.postValue(timeUtils.getTimeBasedMessage())
-        _helloMessageData.postValue(timeUtils.getHelloBasedMessage())
+        _timeHoursData.value = timeUtils.getCurrentTimeHours()
+        _timeData.value = timeUtils.getCurrentTime()
+        _dateData.value = timeUtils.getCurrentDate()
+        _timeMessageData.value = timeUtils.getTimeBasedMessage()
+        _helloMessageData.value = timeUtils.getHelloBasedMessage()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timeUpdateJob.cancel()  // Cancel the time update job when ViewModel is cleared
     }
 }

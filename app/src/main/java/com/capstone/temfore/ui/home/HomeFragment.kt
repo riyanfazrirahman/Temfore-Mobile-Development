@@ -2,6 +2,7 @@ package com.capstone.temfore.ui.home
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -9,20 +10,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.temfore.R
+import com.capstone.temfore.data.RecommendationRepository
 import com.capstone.temfore.data.WeatherRepository
-import com.capstone.temfore.data.retrofit.ApiConfig
+import com.capstone.temfore.data.remote.response.ListRecommendItem
+import com.capstone.temfore.data.remote.retrofit.ApiConfig
 import com.capstone.temfore.databinding.FragmentHomeBinding
 import com.capstone.temfore.ui.auth.login.LoginActivity
-import com.capstone.temfore.ui.onboarding.OnboardingActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
@@ -34,9 +37,16 @@ import kotlin.math.roundToInt
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var viewModel: HomeViewModel
+    private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var recommendationViewModel: RecommendationViewModel
     private lateinit var auth: FirebaseAuth
+
+    private var categoryUser: String = "ayam"
+    private var tempUser: Int = 0
+    private var timeUser: Int = 0
 
     // Permission request launcher untuk meminta izin lokasi
     private val requestPermissionLauncher =
@@ -54,9 +64,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-    // Binding untuk akses elemen tampilan
-    private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,17 +71,24 @@ class HomeFragment : Fragment() {
     ): View {
         // Inisialisasi binding untuk fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+
+        // Initialize ViewModels
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        val weatherRepository = WeatherRepository(ApiConfig.getApiService())
+        val weatherViewModelFactory = WeatherViewModelFactory(weatherRepository)
+        weatherViewModel = ViewModelProvider(this, weatherViewModelFactory).get(WeatherViewModel::class.java)
+
+        recommendationViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(RecommendationViewModel::class.java)
 
         auth = Firebase.auth
         val firebaseUser = auth.currentUser
-
-        Log.d("HomeFragment", "Email verified: ${firebaseUser?.isEmailVerified}")
         if (firebaseUser == null) {
             // Not signed in, launch the Login activity
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
             requireActivity().finish()
         }
+        Log.d("HomeFragment", "Email verified: ${firebaseUser?.isEmailVerified}")
 
         // Inisialisasi FusedLocationProviderClient untuk mendapatkan lokasi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -90,73 +104,80 @@ class HomeFragment : Fragment() {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
-        // Inisialisasi WeatherRepository untuk mengambil data cuaca
-        val weatherRepository = WeatherRepository(ApiConfig.getApiService())
 
-        // Gunakan factory untuk membuat ViewModel
-        val viewModelFactory = WeatherViewModelFactory(weatherRepository)
-        viewModel = ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
+        binding.textItTime.text = getString(R.string.title_it_hello)
+
+        viewModel.helloMessageData.observe(viewLifecycleOwner) {
+            binding.textTime.text =  it
+        }
+        viewModel.timeMessageData.observe(viewLifecycleOwner) {
+            binding.textUserTime.text = it
+        }
+
+        getListCategory()
+
+        binding.progressBar.visibility = View.VISIBLE
 
         // Observasi data cuaca dari ViewModel
-        viewModel.weatherData.observe(viewLifecycleOwner) { weatherResponse ->
+        weatherViewModel.weatherData.observe(viewLifecycleOwner) { weatherResponse ->
             binding.progressBar.visibility = View.GONE
 
             if (weatherResponse != null) {
                 // Update UI dengan data cuaca
-                binding.textUserLocation.text =
-                    getString(R.string.title_user_location, weatherResponse.location)
-                binding.textUserTemperature.text = getString(
-                    R.string.title_user_temperature,
-                    weatherResponse.temperature.roundToInt().toString()
-                )
+                tempUser = weatherResponse.temperature.roundToInt()
+                binding.textUserLocation.text = getString(R.string.title_user_location, weatherResponse.location)
+                binding.textUserTemperature.text = getString(R.string.title_user_temperature, tempUser.toString())
 
-                // Dapatkan ikon cuaca
-                val iconUrl = if (weatherResponse.icon.startsWith("http://")) {
-                    weatherResponse.icon.replace("http://", "https://")
-                } else {
-                    weatherResponse.icon
-                }
-
+                val iconUrl = weatherResponse.icon.replace("http://", "https://")
                 Glide.with(this)
                     .load(iconUrl)
                     .into(binding.imageTemperature)
-
-                Log.d(TAG, "Loading image from URL: ${weatherResponse.icon}")
-
-                // Observasi pesan waktu dari ViewModel
-                viewModel.timeMessageData.observe(requireActivity()) { message ->
-                    binding.textUserTime.text = getString(R.string.title_user_time, message)
-                }
-
-                // Observasi pesan waktu dari ViewModel
-                viewModel.helloMessageData.observe(requireActivity()) { message ->
-                    binding.textTime.text = getString(R.string.title_user_hello, message)
-                }
-
             } else {
-                // Jika data tidak tersedia, tampilkan pesan error
-                binding.textUserLocation.text = getString(R.string.data_not_available)
-                binding.textUserTemperature.text = getString(R.string.data_not_available)
+                binding.userInfo.visibility = View.GONE
             }
         }
 
-//        // Observasi data waktu dari ViewModel
-//        viewModel.timeData.observe(requireActivity()) { time ->
-//            binding.timeTextView.text = time
-//        }
-//
-//        // Observasi data tanggal dari ViewModel
-//        viewModel.dateData.observe(requireActivity()) { date ->
-//            binding.dateTextView.text = date
-//        }
+        binding.rvRecommendations.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        // Fetch food recommendations after weather data
+        recommendationViewModel.recommendations.observe(viewLifecycleOwner) { result ->
+            setRecommendationsData(result)
+            binding.progressBarRecommendations.visibility = View.GONE
 
-        binding.progressBar.visibility = View.VISIBLE
-
-        val textView: TextView = binding.textHome
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
         }
-        return root
+
+        return binding.root
+    }
+
+    private fun getListCategory(){
+        val recyclerView: RecyclerView = binding.rvCategory
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+
+        val imageList = listOf(
+            R.drawable.img_category_1,
+            R.drawable.img_category_2,
+            R.drawable.img_category_3,
+            R.drawable.img_category_4,
+            R.drawable.img_category_5,
+            R.drawable.img_category_6,
+            R.drawable.img_category_7,
+        )
+        val categoryList = listOf(
+            "ayam",
+            "ikan",
+            "kambing",
+            "sapi",
+            "tempe",
+            "telur",
+            "udang"
+        )
+
+        val adapter = CategoryAdapter(imageList, categoryList) { selectedCategory ->
+            categoryUser = selectedCategory
+            // Lakukan request API berdasarkan kategori yang dipilih
+            binding.progressBarRecommendations.visibility = View.VISIBLE
+            fetchFoodRecommendations()
+        }
+        recyclerView.adapter = adapter
     }
 
     // Ambil lokasi terakhir yang diketahui
@@ -200,9 +221,34 @@ class HomeFragment : Fragment() {
 
     // Ambil data cuaca berdasarkan koordinat (latitude dan longitude)
     private fun fetchWeatherByCoordinates(latitude: Double, longitude: Double) {
-        Log.d(TAG, "API request...........")
-        viewModel.fetchWeatherByCoordinates(latitude, longitude)
+        Log.d(TAG, "API request Weather......................")
+        weatherViewModel.fetchWeatherByCoordinates(latitude, longitude)
+        fetchFoodRecommendations()
     }
+
+    private fun fetchFoodRecommendations() {
+        Log.d(TAG, "API request Recommend......................")
+        recommendationViewModel.fetchRecommendations(categoryUser, tempUser, timeUser)
+    }
+
+    private fun setRecommendationsData(listEventsItem: List<ListRecommendItem>) {
+        val adapter = RecommendationAdapter()
+        adapter.submitList(listEventsItem)
+        binding.rvRecommendations.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Mengunci orientasi ke potret
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Kembalikan orientasi ke pengaturan default
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

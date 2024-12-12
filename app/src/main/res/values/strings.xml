@@ -1,22 +1,82 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Temfore App</string>
-    <string name="title_home">Home</string>
-    <string name="title_favorite">Favorite</string>
-    <string name="title_search">Search</string>
-    <string name="title_profile">Profile</string>
+    <string name="versi_v1">Versi v1.0.0</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_favorite">Favorit</string>
+    <string name="title_search">Pencarian</string>
+    <string name="title_profile">Profil</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="title_welcome_username">Hi..</string>
+    <string name="login_temfore">
+        <font color="#FF6700">Login</font> <font color="#000000">Temfore</font>
+    </string>
+    <string name="register_temfore">
+        <font color="#FF6700">Register</font> <font color="#000000">Temfore</font>
+    </string>
+    <string name="reset_password_temfore">
+        <font color="#FF6700">Reset Your</font> <font color="#000000">Password</font>
+    </string>
+
+    <string name="title_welcome_username">Hai,</string>
     <string name="title_user_location">%1$s</string>
     <string name="title_user_temperature">%1$s℃</string>
 
-    <string name="title_hello">Good morning,</string>
-    <string name="title_it_hello">is it time for</string>
-    <string name="title_user_time">%1$s</string>
-    <string name="title_user_hello">%1$s</string>
+    <string name="title_it_hello">Ini waktu nya untuk,</string>
 
     <string name="data_not_available" tools:ignore="TypographyEllipsis">...</string>
-    <string name="your_web_client_id">879994394867-sp65qf8nt83eq2b4ggt06dsi47o1u8n8.apps.googleusercontent.com</string>
 
+    <string name="onboarding_1">Mendapatkan Suhu Udara di Tempat Anda Berada</string>
+    <string name="onboarding_2">Memberikan Rekomendasi Makanan Sesuai Situasi Terkini</string>
+    <string name="onboarding_3">Mengingatkan Anda untuk makan tepat waktu</string>
+    <string name="onboarding_4_1">Welcome to Temfore</string>
+    <string name="onboarding_4_2">Temperature-based Food Recommendations</string>
+
+    <string name="email_valid_untuk_reset_password">Email valid untuk reset password: %1$s</string>
+    <string name="silakan_cek_email_anda_untuk_verifikasi_akun">Silakan cek email Anda untuk verifikasi akun.</string>
+    <string name="tidak_di_temukan">Tidak Di temukan</string>
+    <string name="cari_makanan">Cari Makanan</string>
+
+    <string name="title">title</string>
+    <string name="type">type</string>
+    <string name="bahan_bahan">Bahan-Bahan :</string>
+    <string name="cara_masak">Cara Masak :</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="or">OR</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login">Login</string>
+    <string name="onboarding_image">Onboarding Image</string>
+    <string name="get_started">Get Started</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="masukkan_email_anda_untuk_mereset_password">Masukkan email Anda untuk mereset password</string>
+    <string name="masukkan_email">Masukkan email</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="ganti_foto_profil">Ganti Foto Profil</string>
+    <string name="waiting">waiting…</string>
+    <string name="check_status">Check Status</string>
+    <string name="send_verify">Send Verify</string>
+    <string name="masukkan_username_baru">Masukkan username baru</string>
+    <string name="belum_ada_favorit">Belum Ada Favorit</string>
+    <string name="onboarding_text">Onboarding text</string>
+    <string name="user_name">User Name</string>
+    <string name="user_example_com">user@example.com</string>
+    <string name="ubah_username">Ubah Username</string>
+    <string name="log_out">Log Out</string>
+    <string name="kondisi_cuaca">kondisi cuaca</string>
+    <string name="titik">•</string>
+    <string name="type_makanan">type makanan</string>
+    <string name="sangat_di_rekomendasikan">Sangat di rekomendasikan</string>
+    <string name="nama_makanan">Nama Makanan</string>
+    <string name="temp">temp</string>
+
+    <string name="head_info_notification">Notifikasi</string>
+    <string name="info_notification" tools:ignore="TypographyDashes">Temfore akan mengingatkan Anda makan pada jam tertentu:-- --6..9 -> "Sarapan Pagi!🥪" --11..13 -> "Makan Siang!🧺" --18..20 -> "Makan Malam!🍴"
+    </string>
+    <string name="ok">OK</string>
 
 </resources>

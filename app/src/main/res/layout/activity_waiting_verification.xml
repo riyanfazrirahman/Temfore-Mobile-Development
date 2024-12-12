@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ui.auth.register.WaitingVerificationActivity">
 
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="waiting..."
+        android:text="@string/waiting"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/verifyButton"
+        android:id="@+id/btn_verify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="onVerifyButtonClick"
-        android:text="Lanjutkan ke Login"
+        android:text="@string/check_status"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/messageTextView"
         app:layout_constraintStart_toStartOf="@+id/messageTextView"
         app:layout_constraintTop_toBottomOf="@+id/messageTextView" />
 
+    <Button
+        android:id="@+id/btnSendVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="onVerifyButtonClick"
+        android:text="@string/send_verify"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/btn_verify"
+        app:layout_constraintStart_toStartOf="@+id/btn_verify"
+        app:layout_constraintTop_toBottomOf="@+id/btn_verify" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

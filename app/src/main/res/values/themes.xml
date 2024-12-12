@@ -1,43 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.TemporeApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
+        <!-- Primary brand color -->
         <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryVariant">@color/feldspar</item>
-        <item name="colorOnPrimary">@color/black</item>
-
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/feldspar</item>
-        <item name="colorOnSecondary">?attr/colorPrimary</item>
-        <item name="colorSecondaryContainer">?attr/colorPrimaryVariant</item>
-
+        <item name="colorPrimaryVariant">?attr/colorPrimary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
 
-        <!-- Customize your theme here. -->
-        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
-    </style>
-
-    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
-    </style>
-
-    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorSurface">?attr/colorPrimary</item>
-        <item name="colorOnSurfaceVariant">?attr/colorPrimary</item>
-    </style>
-
-    <style name="Widget.App.BottomAppBar" parent="Widget.Material3.BottomAppBar">
-        <!-- Latar belakang BottomAppBar -->
-        <item name="backgroundTint">@color/orange</item>
-
-        <!-- Warna ikon di BottomAppBar -->
-        <item name="navigationIconTint">@color/orange</item>
-
-        <!-- Elevasi atau bayangan BottomAppBar -->
-        <item name="elevation">8dp</item>
+        <!-- Font family -->
+        <item name="android:fontFamily">@font/poppins</item>
 
     </style>
+
+    <color name="inputAuth">@color/white</color>  <!-- Warna terang -->
+
+    <style name="bottomAuth">
+        <item name="android:textColor">@color/black_300</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomBottomNavigation">
+        <item name="android:background">@color/white</item>
+        <item name="itemTextColor">@color/orange</item>
+        <item name="itemIconTint">@color/black_500</item>
+    </style>
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/orange_200</item>
+    </style>
+    <!-- Base application theme. -->
+
+    <color name="colWhiteBlack">@color/black</color>
 
 </resources>
