@@ -20,7 +20,7 @@ Temfore is a mobile application developed to provide food recommendations based 
 
 ---
 
-## Features
+## 🛠️ **Features of the App**
 
 - **Weather-based food recommendations**: The app suggests food recipes based on the temperature of the user's current location.
 - **User authentication**: Users can log in using Firebase Authentication.
@@ -30,18 +30,18 @@ Temfore is a mobile application developed to provide food recommendations based 
 - **Machine Learning-based Recommendations**: The app uses machine learning models to generate accurate food suggestions.
 - **Meal Reminder Notifications**: The app provides timely reminders for meals using WorkManager:
 
-| Time Range         | Meal         | Description             |
-|---------------------|--------------|-------------------------|
-| **6:00 AM - 9:00 AM** | Breakfast    | Reminder to have breakfast. |
-| **11:00 AM - 1:00 PM**| Lunch        | Reminder to have lunch.     |
-| **6:00 PM - 8:00 PM** | Dinner       | Reminder to have dinner.    |
+    | Time Range         | Meal         | Description             |
+    |---------------------|--------------|-------------------------|
+    | **6:00 AM - 9:00 AM** | Breakfast    | Reminder to have breakfast. |
+    | **11:00 AM - 1:00 PM**| Lunch        | Reminder to have lunch.     |
+    | **6:00 PM - 8:00 PM** | Dinner       | Reminder to have dinner.    |
 
 ![image](img/ss_app.png)
 
-## Kode Penting
+## **💡 Code Highlights**
+Here are some important code snippets that power the functionality of the app.
 
 ### `getLastLocation()`
-
 ```kotlin
 fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task: Task<Location?> ->
     if (task.isSuccessful) {
@@ -111,18 +111,18 @@ Functionality:
 - Determines the current time and displays a notification with an appropriate message.
 ---
 
-# Perbandingan Kelebihan Temfore
+# **🔍 Comparison of Temfore's Advantages**
 
-| **Fitur Utama**                         | **Temfore** | **Aplikasi Serupa** | **Keterangan**                                                                                                   |
-|-----------------------------------------|-------------|----------------------|-------------------------------------------------------------------------------------------------------------------|
-| **Rekomendasi Berdasarkan Cuaca**       | ✔           | ✘                    | Temfore menggunakan cuaca real-time, sedangkan aplikasi serupa tidak mempertimbangkan kondisi cuaca.             |
-| **Integrasi Machine Learning**          | ✔           | ✘                    | Temfore memanfaatkan ML untuk rekomendasi yang personal, sementara aplikasi lain sering hanya menggunakan logika. |
-| **Fitur Notifikasi Pengingat Makan**    | ✔           | ✘                    | Pengingat makan (sarapan, makan siang, makan malam) pada waktu tertentu tidak tersedia di aplikasi serupa.        |
-| **Pencarian Resep**                     | ✔           | ✔                    | Kedua aplikasi mendukung pencarian resep, tetapi Temfore lebih fleksibel karena memungkinkan pencarian bahan.     |
-| **Favorit Resep**                       | ✔           | ✘                    | Resep favorit di Temfore dapat diakses offline, sedangkan aplikasi lain sering membutuhkan koneksi internet.     |
-| **Antarmuka Pengguna (UI/UX)**          | ✔           | ✘                    | Temfore memiliki desain modern dan intuitif, sedangkan banyak aplikasi serupa memiliki antarmuka yang kompleks.   |
-| **Efisiensi API**                       | ✔           | ✘                    | Temfore menggabungkan pemanggilan API cuaca dan rekomendasi, sedangkan aplikasi lain memisahkan proses tersebut.  |
-| **Fitur Login dan Profil Pengguna**     | ✔           | ✘                    | Temfore mendukung login dengan Firebase dan pengelolaan profil, sementara banyak aplikasi lain berbasis lokal.    |
+| **Key Features**                        | **Temfore** | **Similar Apps**     | **Description**                                                                                                  |
+|-----------------------------------------|-------------|-----------------------|------------------------------------------------------------------------------------------------------------------|
+| **Weather-Based Recommendations**       | ✔           | ✘                     | Temfore uses real-time weather data, while similar apps do not consider weather conditions.                     |
+| **Machine Learning Integration**        | ✔           | ✘                     | Temfore leverages ML for personalized recommendations, whereas other apps often rely on basic logic.            |
+| **Meal Reminder Notifications**         | ✔           | ✘                     | Meal reminders for breakfast, lunch, and dinner at specific times are not available in similar apps.            |
+| **Recipe Search**                       | ✔           | ✔                     | Both apps support recipe searches, but Temfore is more flexible by allowing searches by ingredients.            |
+| **Favorite Recipes**                    | ✔           | ✘                     | Favorite recipes in Temfore are accessible offline, while other apps often require an internet connection.      |
+| **User Interface (UI/UX)**              | ✔           | ✘                     | Temfore features a modern and intuitive design, whereas many similar apps have complex interfaces.              |
+| **API Efficiency**                      | ✔           | ✘                     | Temfore combines weather and recommendation API calls, while similar apps often separate these processes.       |
+| **User Login and Profile Management**   | ✔           | ✘                     | Temfore supports Firebase login and profile management, whereas many other apps are local-only.                 |
 
-## Kesimpulan
-Temfore unggul dalam relevansi rekomendasi berbasis cuaca, efisiensi API, serta fitur tambahan seperti notifikasi dan personalisasi melalui profil pengguna.
+## Conclusion
+Temfore excels in providing weather-based recommendations, API efficiency, and additional features like notifications and personalized profile management.
