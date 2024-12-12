@@ -49,7 +49,7 @@ class OnboardingActivity : AppCompatActivity() {
                         binding.root.solidColor, // Warna awal
                         getColor(R.color.white) // Warna akhir
                     )
-                    colorFade.duration = 500 // Durasi animasi (0.5 detik)
+                    colorFade.duration = 700 // Durasi animasi (0.7 detik)
                     colorFade.addUpdateListener { animator ->
                         binding.root.setBackgroundColor(animator.animatedValue as Int)
                     }
@@ -58,7 +58,7 @@ class OnboardingActivity : AppCompatActivity() {
                     // Animasi fade-in untuk tombol Get Started
                     binding.btnStart.animate()
                         .alpha(1f)
-                        .setDuration(500) // Durasi animasi (0.5 detik)
+                        .setDuration(700) // Durasi animasi (0.7 detik)
                         .withStartAction {
                             binding.btnStart.visibility = View.VISIBLE
                         }
@@ -67,7 +67,7 @@ class OnboardingActivity : AppCompatActivity() {
                     // Animasi fade-out untuk elemen lain
                     binding.dotsIndicator.animate()
                         .alpha(0f)
-                        .setDuration(500)
+                        .setDuration(700) // Durasi lebih lama
                         .withEndAction {
                             binding.dotsIndicator.visibility = View.GONE
                         }
@@ -75,7 +75,7 @@ class OnboardingActivity : AppCompatActivity() {
 
                     binding.viewPager.animate()
                         .alpha(0f)
-                        .setDuration(500)
+                        .setDuration(700) // Durasi lebih lama
                         .withEndAction {
                             binding.viewPager.visibility = View.GONE
                         }
@@ -83,7 +83,7 @@ class OnboardingActivity : AppCompatActivity() {
 
                     binding.cLayoutWelcome.animate()
                         .alpha(1f)
-                        .setDuration(100)
+                        .setDuration(500) // Durasi lebih cepat
                         .withEndAction {
                             binding.cLayoutWelcome.visibility = View.VISIBLE
                         }
@@ -100,7 +100,6 @@ class OnboardingActivity : AppCompatActivity() {
                     binding.viewPager.alpha = 1f
                     binding.cLayoutWelcome.alpha = 0f
                 }
-
             }
         })
 
