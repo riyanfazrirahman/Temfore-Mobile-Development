@@ -152,10 +152,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setEventDetailData(food: ListRecommendItem) {
+        binding.tvFoodTemp.text = TextFormat.formatTemperatureMessage(food.tempCold)
         binding.tvFoodType.text =  TextFormat.formatType(food.type)
         binding.tvFoodTitle.text = food.title
         binding.tvFoodIngredients.text = TextFormat.formatIngredients(food.ingredients)
         binding.tvFoodSteps.text = TextFormat.formatSteps(food.steps)
+
+        val imgCategory = TextFormat.getCategoryImage(food.category.toString())
+        Glide.with(binding.foodCategory.context)
+            .load(imgCategory)
+            .into(binding.foodCategory)
 
         Glide.with(binding.ivFoodImage.context)
             .load(food.imageUrl)

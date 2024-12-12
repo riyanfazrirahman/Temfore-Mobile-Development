@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Temfore App</string>
-    <string name="versi_v1">Versi v1.0.4</string>
+    <string name="versi_v1">Versi v1.0.0</string>
     <string name="title_home">Beranda</string>
     <string name="title_favorite">Favorit</string>
     <string name="title_search">Pencarian</string>
@@ -24,7 +24,6 @@
     <string name="title_it_hello">Ini waktu nya untuk,</string>
 
     <string name="data_not_available" tools:ignore="TypographyEllipsis">...</string>
-    <string name="your_web_client_id">879994394867-sp65qf8nt83eq2b4ggt06dsi47o1u8n8.apps.googleusercontent.com</string>
 
     <string name="onboarding_1">Mendapatkan Suhu Udara di Tempat Anda Berada</string>
     <string name="onboarding_2">Memberikan Rekomendasi Makanan Sesuai Situasi Terkini</string>

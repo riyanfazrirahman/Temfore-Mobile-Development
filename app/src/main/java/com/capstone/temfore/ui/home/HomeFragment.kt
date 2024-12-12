@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
     private lateinit var recommendationViewModel: RecommendationViewModel
     private lateinit var auth: FirebaseAuth
 
-    private var categoryUser: String = "tempe"
+    private var categoryUser: String = "ayam"
     private var tempUser: Int = 0
     private var timeUser: Int = 0
 
@@ -113,7 +113,6 @@ class HomeFragment : Fragment() {
         viewModel.timeMessageData.observe(viewLifecycleOwner) {
             binding.textUserTime.text = it
         }
-
 
         getListCategory()
 

@@ -3,6 +3,7 @@ package com.capstone.temfore.ui.auth.login
 import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,7 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
+import com.capstone.temfore.BuildConfig
 import com.capstone.temfore.MainActivity
 import com.capstone.temfore.R
 import com.capstone.temfore.databinding.ActivityLoginBinding
@@ -123,6 +125,9 @@ class LoginActivity : AppCompatActivity() {
                 setMessage("Akun dengan email ${user.email} berhasil login. Selamat datang kembali!")
                 setPositiveButton("Lanjut") { _, _ ->
                     // Pindah ke MainActivity
+                    val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+                    sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -196,7 +201,7 @@ class LoginActivity : AppCompatActivity() {
 
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(getString(R.string.your_web_client_id))
+            .setServerClientId(BuildConfig.GOOGLE_WEB_CLIENT_ID)
             .build()
 
         val request = GetCredentialRequest.Builder() //import from androidx.CredentialManager
@@ -274,6 +279,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
+            val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }

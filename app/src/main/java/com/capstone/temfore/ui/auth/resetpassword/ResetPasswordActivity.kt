@@ -1,13 +1,12 @@
 package com.capstone.temfore.ui.auth.resetpassword
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.capstone.temfore.MainActivity
 import com.capstone.temfore.R
 import com.capstone.temfore.databinding.ActivityResetPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -40,66 +39,106 @@ class ResetPasswordActivity : AppCompatActivity() {
             // Menampilkan progress bar
             binding.progressBar.visibility = View.VISIBLE
 
-            // Mengecek apakah email terdaftar di Firebase Auth
-            checkEmailInFirebase(email)
+            // Mengecek apakah email valid
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(this, "Email tidak valid!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Mengecek apakah email terdaftar di Firebase
+            checkEmailAndSendReset(email)
         }
     }
 
-    // Fungsi untuk mengecek apakah email terdaftar di Firebase Auth
-    private fun checkEmailInFirebase(email: String) {
-        // Mengecek apakah email valid
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Email tidak valid!", Toast.LENGTH_SHORT).show()
-            return
+    // Fungsi untuk mengecek apakah email terdaftar di Firebase dan mengirim email reset
+    private fun checkEmailAndSendReset(email: String) {
+        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
+            binding.progressBar.visibility = View.GONE
+            if (task.isSuccessful) {
+                // Email terdaftar, lakukan logout dan kirim email reset
+                showLogoutDialog(email)
+            } else {
+                // Gagal memeriksa email
+                Toast.makeText(this, "Gagal memeriksa email. Coba lagi nanti.", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
+    }
 
-        @Suppress("DEPRECATION")
-        auth.fetchSignInMethodsForEmail(email)
-            .addOnCompleteListener { task ->
-                binding.progressBar.visibility = View.GONE
-                if (task.isSuccessful) {
-                    // Email TERDAFTAR
+    // Menampilkan dialog konfirmasi untuk logout sebelum mengirim email reset
+    private fun showLogoutDialog(email: String) {
+        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        val isLogin = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        if (!isLogin) {
+            // Dialog untuk logout dan reset password ketika belum login
+            AlertDialog.Builder(this).apply {
+                setTitle("Konfirmasi Logout")
+                setMessage("Untuk mengirim email reset password, akun akan logout. Lanjutkan?")
+                setPositiveButton("Ya") { _, _ ->
+                    logOutAndSendResetEmail(email)
+                }
+                setNegativeButton("Batal") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                create()
+                show()
+            }
+        } else {
+            // Dialog untuk reset password ketika sudah login
+            AlertDialog.Builder(this).apply {
+                setTitle("Reset Password")
+                setMessage("Anda yakin ingin mengirimkan email untuk reset password?")
+                setPositiveButton("Ya") { _, _ ->
                     sendResetEmail(email)
-                } else {
-                    // Gagal memeriksa
-                    Toast.makeText(this, "Gagal memeriksa email", Toast.LENGTH_SHORT).show()
                 }
+                setNegativeButton("Batal") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                create()
+                show()
             }
+        }
     }
 
-    // Fungsi untuk mengirim email reset password
+    // Logout pengguna dan mengirim email reset password
+    private fun logOutAndSendResetEmail(email: String) {
+        auth.signOut()
+        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+
+        sendResetEmail(email)
+    }
+
+    // Mengirim email reset password
     private fun sendResetEmail(email: String) {
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                // Menyembunyikan progress bar setelah proses selesai
-                binding.progressBar.visibility = View.GONE
-                binding.ivEmailResult.visibility = View.VISIBLE
-                if (task.isSuccessful) {
-                    // Menampilkan email yang disensor di UI
-                    val maskedEmail = maskEmail(email)
-                    binding.ivEmailResult.text =
-                        getString(R.string.email_valid_untuk_reset_password, maskedEmail)
+        binding.progressBar.visibility = View.VISIBLE
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            binding.progressBar.visibility = View.GONE
+            if (task.isSuccessful) {
+                val maskedEmail = maskEmail(email)
+                Toast.makeText(
+                    this,
+                    "Email reset password telah dikirim ke $maskedEmail",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-                    Toast.makeText(this, "Email reset password telah dikirim!", Toast.LENGTH_SHORT)
-                        .show()
-
-                    // Kembali ke halaman utama setelah beberapa detik
-                    binding.root.postDelayed({
-                        // To navigate back
-                        onSupportNavigateUp()
-                    }, 2000) // Delay 2 detik sebelum kembali
-                } else {
-                    val errorMessage =
-                        task.exception?.message ?: "Terjadi kesalahan saat mengirim email."
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-                }
+                // Kembali ke halaman login
+                navigateToLogin()
+            } else {
+                val errorMessage =
+                    task.exception?.message ?: "Terjadi kesalahan saat mengirim email."
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
             }
+        }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
+    // Navigasi ke halaman login
+    private fun navigateToLogin() {
+        val intent = Intent(this, com.capstone.temfore.ui.auth.login.LoginActivity::class.java)
+        startActivity(intent)
         finish()
-        return super.onSupportNavigateUp()
     }
 
     // Fungsi untuk menyensor email

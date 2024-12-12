@@ -83,7 +83,7 @@ class OnboardingActivity : AppCompatActivity() {
 
                     binding.cLayoutWelcome.animate()
                         .alpha(1f)
-                        .setDuration(500)
+                        .setDuration(100)
                         .withEndAction {
                             binding.cLayoutWelcome.visibility = View.VISIBLE
                         }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -27,7 +28,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: android.view.LayoutInflater,
         container: android.view.ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
@@ -164,7 +165,8 @@ class ProfileFragment : Fragment() {
                 if (newUsername.isNotEmpty()) {
                     viewModel.updateUsername(newUsername)
                 } else {
-                    Toast.makeText(context, "Username tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Username tidak boleh kosong", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             setNegativeButton("Batal") { dialog, _ -> dialog.dismiss() }
@@ -181,7 +183,14 @@ class ProfileFragment : Fragment() {
         builder.setPositiveButton("Ya") { dialog, _ ->
             // Jika pengguna menekan "Ya", logout dilakukan
             viewModel.logOut()
-            val intent = Intent(requireContext(), com.capstone.temfore.ui.auth.login.LoginActivity::class.java)
+
+            val sharedPreferences = requireContext().getSharedPreferences("AppPrefs", MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+
+            val intent = Intent(
+                requireContext(),
+                com.capstone.temfore.ui.auth.login.LoginActivity::class.java
+            )
             startActivity(intent)
             requireActivity().finish()
             dialog.dismiss()
