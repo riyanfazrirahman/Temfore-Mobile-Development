@@ -12,8 +12,6 @@
 
     </style>
 
-    <style name="Theme.BottomNavigation" parent="Theme.TemporeApp" />
-
     <color name="inputAuth">@color/white</color>  <!-- Warna terang -->
 
     <style name="bottomAuth">
@@ -32,5 +30,8 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/orange_200</item>
     </style>
+    <!-- Base application theme. -->
+
+    <color name="colWhiteBlack">@color/black</color>
 
 </resources>

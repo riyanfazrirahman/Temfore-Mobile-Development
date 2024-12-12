@@ -24,6 +24,7 @@ import com.capstone.temfore.R
 import com.capstone.temfore.databinding.ActivityLoginBinding
 import com.capstone.temfore.ui.auth.register.RegisterActivity
 import com.capstone.temfore.ui.auth.register.WaitingVerificationActivity
+import com.capstone.temfore.ui.auth.resetpassword.ResetPasswordActivity
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -63,6 +64,17 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLoginWithGoogle.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
             loginWithGoogle()
+        }
+
+        binding.btnForgotPassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            val options = ActivityOptions.makeCustomAnimation(
+                this,    // Context
+                android.R.anim.fade_in,    // Animasi saat Activity pertama muncul
+                android.R.anim.fade_out    // Animasi saat Activity pertama hilang
+            )
+            startActivity(intent, options.toBundle())
+            finish()
         }
 
         binding.tvRegister.setOnClickListener {
@@ -178,6 +190,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginWithGoogle() {
+
         val credentialManager =
             CredentialManager.create(this) //import from androidx.CredentialManager
 
@@ -198,10 +211,13 @@ class LoginActivity : AppCompatActivity() {
                     context = this@LoginActivity,
                 )
                 handleLoginWithGoogle(result)
-            } catch (e: GetCredentialException) { //import from androidx.CredentialManager
+            } catch (e: GetCredentialException) {
                 Log.d("Error", e.message.toString())
+                binding.progressBar.visibility = View.GONE
             }
         }
+
+
     }
 
     private fun handleLoginWithGoogle(result: GetCredentialResponse) {
@@ -221,16 +237,19 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.e(TAG, "Received an invalid google id token response", e)
+                        binding.progressBar.visibility = View.GONE
                     }
                 } else {
                     // Catch any unrecognized custom credential type here.
                     Log.e(TAG, "Unexpected type of credential")
+                    binding.progressBar.visibility = View.GONE
                 }
             }
 
             else -> {
                 // Catch any unrecognized credential type here.
                 Log.e(TAG, "Unexpected type of credential")
+                binding.progressBar.visibility = View.GONE
             }
         }
     }
@@ -239,6 +258,7 @@ class LoginActivity : AppCompatActivity() {
         val credential: AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
+                binding.progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")

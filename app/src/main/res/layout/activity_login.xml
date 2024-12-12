@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.auth.login.LoginActivity" >
+    tools:context=".ui.auth.login.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/light_silver"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/light_silver">
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -37,13 +35,12 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_logo"
-           />
+            app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:alpha="0"
             android:background="@drawable/bg_rounded_top"
@@ -58,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0"
-                android:text="Email"
+                android:text="@string/email"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +77,7 @@
                 tools:alpha="100">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_email"
+                    android:id="@+id/inputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_rounded_white"
@@ -94,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:alpha="0"
-                android:text="Password"
+                android:text="@string/password"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,13 +114,27 @@
                 tools:alpha="100">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_password"
+                    android:id="@+id/inputPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_rounded_white"
                     android:ems="10"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/btnForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:alpha="0"
+                android:text="@string/forgot_password"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/layout_password"
+                app:layout_constraintTop_toBottomOf="@+id/layout_password"
+                tools:alpha="100" />
 
             <LinearLayout
                 android:id="@+id/layout_register"
@@ -135,13 +146,13 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_password"
+                app:layout_constraintTop_toBottomOf="@+id/btnForgotPassword"
                 tools:alpha="100">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't have an account? "
+                    android:text="@string/don_t_have_an_account"
                     android:textColor="@color/white" />
 
                 <LinearLayout
@@ -150,10 +161,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_register"
+                        android:id="@+id/tvRegister"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Register"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/register"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
 
@@ -188,11 +200,10 @@
 
                 <!-- Teks OR -->
                 <TextView
-                    android:id="@+id/orTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
-                    android:text="OR"
+                    android:text="@string/or"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -222,7 +233,6 @@
 
                 <!-- Logo Google -->
                 <ImageView
-                    android:id="@+id/googleLogo"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
@@ -233,12 +243,11 @@
 
                 <!-- Teks Google Login -->
                 <TextView
-                    android:id="@+id/googleLoginText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="Login with Google"
+                    android:text="@string/login_with_google"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -249,15 +258,15 @@
 
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btnLogin"
+                style="@style/bottomAuth"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:layout_marginBottom="8dp"
                 android:alpha="0"
                 android:padding="12dp"
-                android:text="Login"
-                style="@style/bottomAuth"
+                android:text="@string/login"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -272,10 +281,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,1 +1,0 @@
-package com.capstone.temfore.data.responsedata class WeatherResponse(    val location: String,    val weather: String,    val description: String,    val icon: String,    val temperature: Double,    val cloudiness: Int)

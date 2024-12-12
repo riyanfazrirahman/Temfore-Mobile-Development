@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -60,6 +62,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.storage)
 
     // Testing
     testImplementation(libs.junit)
@@ -73,6 +77,9 @@ dependencies {
 
     // data storage
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     // gambar
     implementation(libs.glide)
@@ -90,5 +97,12 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+
+    //notifikasi
+    implementation(libs.androidx.work.runtime.ktx)
+
+    //onBoarding
+    implementation(libs.dotsindicator)
+
 
 }

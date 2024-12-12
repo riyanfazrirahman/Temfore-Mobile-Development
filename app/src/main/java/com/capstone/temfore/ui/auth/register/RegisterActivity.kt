@@ -117,12 +117,15 @@ class RegisterActivity : AppCompatActivity() {
                                     }
                                 }
                             } else {
+                                binding.progressBar.visibility = View.GONE
                                 Log.d(TAG, "${updateTask.exception?.message}")
                                 Toast.makeText(this, "Gagal mengupdate profil", Toast.LENGTH_SHORT)
                                     .show()
+
                             }
                         }
                     } else {
+                        binding.progressBar.visibility = View.GONE
                         Log.d(TAG, "${task.exception?.message}")
                         showAlertDialog(
                             title = "Registrasi gagal!",

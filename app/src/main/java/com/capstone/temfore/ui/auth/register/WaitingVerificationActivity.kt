@@ -3,6 +3,7 @@ package com.capstone.temfore.ui.auth.register
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,8 @@ class WaitingVerificationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Tampilkan pesan bahwa user perlu memverifikasi email
-        binding.messageTextView.text = "Silakan cek email Anda untuk verifikasi akun."
+        binding.messageTextView.text =
+            getString(R.string.silakan_cek_email_anda_untuk_verifikasi_akun)
 
         val user = FirebaseAuth.getInstance().currentUser
         binding.btnVerify.setOnClickListener {
@@ -109,4 +111,6 @@ class WaitingVerificationActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "WaitingVerificationActivity"
     }
+
+    fun onVerifyButtonClick(view: View) {}
 }
