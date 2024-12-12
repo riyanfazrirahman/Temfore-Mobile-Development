@@ -21,13 +21,108 @@ Temfore is a mobile application developed to provide food recommendations based 
 ---
 
 ## Features
+
 - **Weather-based food recommendations**: The app suggests food recipes based on the temperature of the user's current location.
 - **User authentication**: Users can log in using Firebase Authentication.
 - **Profile management**: Users can manage their profiles, which include saved favorite recipes.
 - **Recipe search**: Users can search for recipes based on ingredients or recipe names.
 - **Favorite recipes**: Users can mark their favorite recipes to view later.
 - **Machine Learning-based Recommendations**: The app uses machine learning models to generate accurate food suggestions.
+- **Meal Reminder Notifications**: The app provides timely reminders for meals using WorkManager:
+
+| Time Range         | Meal         | Description             |
+|---------------------|--------------|-------------------------|
+| **6:00 AM - 9:00 AM** | Breakfast    | Reminder to have breakfast. |
+| **11:00 AM - 1:00 PM**| Lunch        | Reminder to have lunch.     |
+| **6:00 PM - 8:00 PM** | Dinner       | Reminder to have dinner.    |
 
 ![image](img/ss_app.png)
 
+## Kode Penting
 
+### `getLastLocation()`
+
+```kotlin
+fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task: Task<Location?> ->
+    if (task.isSuccessful) {
+        val location = task.result
+        if (location != null) {
+            val latitude = location.latitude
+            val longitude = location.longitude
+            fetchWeatherByCoordinates(latitude, longitude) 
+        } 
+    }
+}
+```
+Functionality:
+- Retrieves the user's last known location using fusedLocationClient.
+- Passes the coordinates (latitude, longitude) to fetchWeatherByCoordinates() if the location is successfully fetched.
+---
+### `fetchWeatherByCoordinates(latitude: Double, longitude: Double)`
+
+```kotlin
+private fun fetchWeatherByCoordinates(latitude: Double, longitude: Double) {
+    Log.d(TAG, "API request Weather......................")
+    weatherViewModel.fetchWeatherByCoordinates(latitude, longitude)
+    fetchFoodRecommendations()
+}
+```
+Functionality:
+- Logs the start of the weather API request.
+- Fetches weather data using weatherViewModel.
+- Calls fetchFoodRecommendations() to generate food recommendations based on weather data.
+---
+### `fetchFoodRecommendations()`
+
+```kotlin
+private fun fetchFoodRecommendations() {
+    Log.d(TAG, "API request Recommend......................")
+    recommendationViewModel.fetchRecommendations(categoryUser, tempUser, timeUser)
+}
+```
+Functionality:
+
+- Logs the start of the recommendation API request.
+- Fetches food recommendations using user preferences (`categoryUser`) and weather data (`tempUser`, `timeUser`).
+---
+### `scheduleNotification()` & `showNotification()`
+
+```kotlin
+private fun scheduleNotification(context: Context) {
+    val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES).build()
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork("NotificationWork1", ExistingPeriodicWorkPolicy.KEEP, workRequest)
+}
+```
+```kotlin
+private fun showNotification(context: Context) {
+    val calendar = Calendar.getInstance()
+    val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+    val message = when (currentHour) {
+        in 6..9 -> "Sarapan Pagi!🥪"
+        in 11..13 -> "Makan Siang!🧺"
+        in 18..20 -> "Makan Malam!🍴"
+        else -> { return }
+    }
+}
+```
+Functionality:
+- Schedules periodic notifications using WorkManager.
+- Ensures the notification is triggered every 15 minutes (or at specified intervals).
+- Determines the current time and displays a notification with an appropriate message.
+---
+
+# Perbandingan Kelebihan Temfore
+
+| **Fitur Utama**                         | **Temfore** | **Aplikasi Serupa** | **Keterangan**                                                                                                   |
+|-----------------------------------------|-------------|----------------------|-------------------------------------------------------------------------------------------------------------------|
+| **Rekomendasi Berdasarkan Cuaca**       | ✔           | ✘                    | Temfore menggunakan cuaca real-time, sedangkan aplikasi serupa tidak mempertimbangkan kondisi cuaca.             |
+| **Integrasi Machine Learning**          | ✔           | ✘                    | Temfore memanfaatkan ML untuk rekomendasi yang personal, sementara aplikasi lain sering hanya menggunakan logika. |
+| **Fitur Notifikasi Pengingat Makan**    | ✔           | ✘                    | Pengingat makan (sarapan, makan siang, makan malam) pada waktu tertentu tidak tersedia di aplikasi serupa.        |
+| **Pencarian Resep**                     | ✔           | ✔                    | Kedua aplikasi mendukung pencarian resep, tetapi Temfore lebih fleksibel karena memungkinkan pencarian bahan.     |
+| **Favorit Resep**                       | ✔           | ✘                    | Resep favorit di Temfore dapat diakses offline, sedangkan aplikasi lain sering membutuhkan koneksi internet.     |
+| **Antarmuka Pengguna (UI/UX)**          | ✔           | ✘                    | Temfore memiliki desain modern dan intuitif, sedangkan banyak aplikasi serupa memiliki antarmuka yang kompleks.   |
+| **Efisiensi API**                       | ✔           | ✘                    | Temfore menggabungkan pemanggilan API cuaca dan rekomendasi, sedangkan aplikasi lain memisahkan proses tersebut.  |
+| **Fitur Login dan Profil Pengguna**     | ✔           | ✘                    | Temfore mendukung login dengan Firebase dan pengelolaan profil, sementara banyak aplikasi lain berbasis lokal.    |
+
+## Kesimpulan
+Temfore unggul dalam relevansi rekomendasi berbasis cuaca, efisiensi API, serta fitur tambahan seperti notifikasi dan personalisasi melalui profil pengguna.
