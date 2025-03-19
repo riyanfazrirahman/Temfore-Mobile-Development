@@ -1,0 +1,1 @@
+package com.capstone.temfore.dataimport com.capstone.temfore.data.remote.response.WeatherResponseimport com.capstone.temfore.data.remote.retrofit.ApiServiceclass WeatherRepository(private val ApiService: ApiService) {    suspend fun getWeatherByCoordinates(lat: Double, lon:Double): WeatherResponse {        return ApiService.getWeather(lat, lon)    }}

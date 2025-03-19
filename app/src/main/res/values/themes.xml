@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TemporeApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+
+        <!-- Font family -->
+        <item name="android:fontFamily">@font/poppins</item>
+
+    </style>
+
+    <color name="inputAuth">@color/white</color>  <!-- Warna terang -->
+
+    <style name="bottomAuth">
+        <item name="android:textColor">@color/black_300</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomBottomNavigation">
+        <item name="android:background">@color/white</item>
+        <item name="itemTextColor">@color/orange</item>
+        <item name="itemIconTint">@color/black_500</item>
+    </style>
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/orange_200</item>
+    </style>
+    <!-- Base application theme. -->
+
+    <color name="colWhiteBlack">@color/black</color>
+
+</resources>
